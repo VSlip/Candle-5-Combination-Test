@@ -85,11 +85,6 @@ Both DataFrames include the following fields:
 - The results depend heavily on the quality and timeframe of the input data.
 - No guarantee of future prediction accuracy due to the volatile nature of stock markets.
 
-## Future Improvements
-
-- Enhance the script to include more complex candlestick patterns.
-- Integrate with real-time stock data APIs for live analysis.
-- Build a graphical interface for better visualization of results.
 
 ## License
 
