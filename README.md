@@ -28,12 +28,12 @@ The project uses a CSV file containing historical stock data with the following 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/candlestick-prediction.git
+   git clone https://github.com/VSlip/Candle-5-Combination-Test.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd candlestick-prediction
+   cd Candle-5-Combination-Test
    ```
 
 3. Install the required dependencies:
