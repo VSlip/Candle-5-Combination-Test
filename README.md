@@ -45,10 +45,6 @@ The project uses a CSV file containing historical stock data with the following 
 
 ## Usage
 
-Run the main script to analyze the data:
-```bash
-python candlestick_analysis.py
-```
 
 The script outputs two DataFrames:
 - `df_green`: Contains combinations predicting a bullish outcome.
