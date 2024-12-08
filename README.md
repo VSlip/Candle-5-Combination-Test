@@ -1,146 +1,101 @@
-Overview
+# Candlestick Pattern Prediction
 
-The project processes historical candlestick data to:
+This project explores candlestick patterns in stock market data to identify specific combinations that could predict the movement of the next candle. Using historical stock data, the script analyzes patterns and outputs combinations with high predictive accuracy.
 
-Categorize each candlestick as green (bullish), red (bearish), or neutral.
+## Project Overview
 
-Combine candlestick patterns into sequences.
+Candlestick charts are widely used in technical analysis. This project aims to:
+- Identify unique combinations of candlestick patterns.
+- Determine the predictive value of each combination.
+- Categorize combinations into bullish or bearish indicators based on historical data.
 
-Identify sequences that consistently predict green or red candlesticks.
+## Features
 
-Output the most predictive combinations with their success rates.
+- **Candlestick Analysis**: Differentiates between green (bullish) and red (bearish) candles based on open and close prices.
+- **Combination Detection**: Evaluates sequences of candlesticks and identifies patterns.
+- **Validation**: Calculates the accuracy and frequency of combinations that predict the next candle's direction.
+- **Result Segmentation**: Outputs valid combinations into `df_green` (bullish predictions) and `df_red` (bearish predictions) dataframes.
 
-Features
+## Data Requirements
 
-Categorization of candlesticks based on open, close, high, and low prices.
+The project uses a CSV file containing historical stock data with the following columns:
+- `OPEN`: Opening price of the stock.
+- `CLOSE`: Closing price of the stock.
+- `HIGH`: Highest price during the time period.
+- `LOW`: Lowest price during the time period.
 
-Detection of predictive candlestick sequences.
+## Installation and Setup
 
-Calculation of success rates for each sequence.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/candlestick-prediction.git
+   ```
 
-Output of detailed statistics for both green and red predictions.
+2. Navigate to the project directory:
+   ```bash
+   cd candlestick-prediction
+   ```
 
-Installation
+3. Install the required dependencies:
+   ```bash
+   pip install pandas
+   ```
 
-Clone the repository:
+4. Add your dataset file (e.g., `AAPLD.csv`) to the project directory.
 
-git clone https://github.com/your-username/candlestick-prediction.git
+## Usage
 
-Navigate to the project directory:
+Run the main script to analyze the data:
+```bash
+python candlestick_analysis.py
+```
 
-cd candlestick-prediction
+The script outputs two DataFrames:
+- `df_green`: Contains combinations predicting a bullish outcome.
+- `df_red`: Contains combinations predicting a bearish outcome.
 
-Install the required dependencies:
+Both DataFrames include the following fields:
+- `combinations`: The candlestick sequence.
+- `red`: Count of bearish predictions.
+- `green`: Count of bullish predictions.
+- `count`: Total occurrences of the combination.
+- `percentage`: Accuracy of the prediction in percentage.
 
-pip install pandas
+## Example Output
 
-Usage
+### Green Predictions (`df_green`):
+| Index | Combinations       | Red | Green | Count | Percentage |
+|-------|--------------------|-----|-------|-------|------------|
+| 0     | [1, 1, 1, 1, 0]   | 140 | 151   | 291   | 51.89%     |
+| 1     | [0, 1, 1, 0, 1]   | 127 | 149   | 276   | 53.98%     |
 
-Place your historical candlestick data file (CSV format) in the project directory. The CSV should contain the following columns:
+### Red Predictions (`df_red`):
+| Index | Combinations       | Red | Green | Count | Percentage |
+|-------|--------------------|-----|-------|-------|------------|
+| 0     | [0, 0, 0, 0, 0]   | 725 | 163   | 888   | 81.64%     |
+| 1     | [0, 0, 0, 0, 1]   | 181 | 133   | 314   | 57.64%     |
 
-OPEN
+## Customization
 
-CLOSE
+- Update the `AAPLD.csv` file to analyze data for different stocks.
+- Modify the pattern detection logic to include additional candlestick attributes such as Doji or engulfing patterns.
 
-HIGH
+## Limitations
 
-LOW
+- The results depend heavily on the quality and timeframe of the input data.
+- No guarantee of future prediction accuracy due to the volatile nature of stock markets.
 
-Update the read_csv line in the code to match your data file name:
+## Future Improvements
 
-df = pd.read_csv("your_data_file.csv")
+- Enhance the script to include more complex candlestick patterns.
+- Integrate with real-time stock data APIs for live analysis.
+- Build a graphical interface for better visualization of results.
 
-Run the script:
-
-python candlestick_prediction.py
-
-The results will be output as two DataFrames (df_green and df_red), showing the most predictive combinations for green and red candles, along with their statistics.
-
-Data Description
-
-The input data should be in CSV format and include the following columns:
-
-OPEN: Opening price of the candlestick.
-
-CLOSE: Closing price of the candlestick.
-
-HIGH: Highest price of the candlestick.
-
-LOW: Lowest price of the candlestick.
-
-The script processes this data to calculate:
-
-GREEN/RED: Categorization of each candlestick (1 for green, 0 for red).
-
-combine1: Sequences of candlestick patterns.
-
-Output
-
-The script generates two DataFrames:
-
-df_green: Predictive sequences for green candlesticks.
-
-Columns: combinations, red, green, count, percentage
-
-df_red: Predictive sequences for red candlesticks.
-
-Columns: combinations, red, green, count, percentage
-
-Example Output (Green Predictions):
-
-combinations
-
-red
-
-green
-
-count
-
-percentage
-
-[1, 1, 1, 1, 0]
-
-140
-
-151
-
-291
-
-51.89%
-
-Example Output (Red Predictions):
-
-combinations
-
-red
-
-green
-
-count
-
-percentage
-
-[0, 0, 0, 0, 0]
-
-725
-
-163
-
-888
-
-81.64%
-
-Contributing
-
-Contributions are welcome! Please follow these steps:
-
-Fork the repository.
-
-Create a new branch for your feature or bug fix.
-
-Submit a pull request with a clear explanation of your changes.
-
-License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
+---
+
+### Author
+Developed by [Your Name](https://github.com/yourusername).
