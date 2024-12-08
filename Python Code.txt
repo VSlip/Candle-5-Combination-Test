@@ -1,0 +1,145 @@
+import pandas as pd
+df = pd.read_csv("AAPLD.csv")
+df['GREEN/RED']=2
+for i in range(1,len(df.index)):
+    if df.loc[i,'CLOSE']>df.loc[i,'OPEN']:
+        df.loc[i,'GREEN/RED']=1
+    elif df.loc[i,'CLOSE']<df.loc[i,'OPEN']:
+        df.loc[i,'GREEN/RED']=0
+    else:
+        df.loc[i,'GREEN/RED']=0
+# df['doji']=0
+# for i in range(0,len(df.index)):
+#     if df.loc[i,'GREEN/RED']==1 and (df.loc[i,'CLOSE']-df.loc[i,'OPEN'])>(df.loc[i,'HIGH']-df.loc[i,'CLOSE'])+(df.loc[i,'OPEN']-df.loc[i,'LOW']): 
+#         df.loc[i,'doji']=0
+#     elif df.loc[i,'GREEN/RED']==1 and (df.loc[i,'CLOSE']-df.loc[i,'OPEN'])<(df.loc[i,'HIGH']-df.loc[i,'CLOSE'])+(df.loc[i,'OPEN']-df.loc[i,'LOW']):
+#         df.loc[i,'doji']=1                                                                                                                                 
+                                                                                                                                         
+#     if df.loc[i,"GREEN/RED"]==0 and (df.loc[i,'OPEN']-df.loc[i,'CLOSE'])>(df.loc[i,'LOW']-df.loc[i,'CLOSE'])+(df.loc[i,'OPEN']-df.loc[i,'HIGH']):
+#         df.loc[i,"doji"]=0
+#     elif df.loc[i,"GREEN/RED"]==0 and (df.loc[i,'OPEN']-df.loc[i,'CLOSE'])<(df.loc[i,'LOW']-df.loc[i,'CLOSE'])+(df.loc[i,'OPEN']-df.loc[i,'HIGH']):                                                                                                                                    
+#         df.loc[i,'doji']=1                                                                                                                               
+# for i in range(0,len(df.index)):
+#                if(df.loc[i,'GREEN/RED']==1 and (df.loc[i,'HIGH']-df.loc[i,'CLOSE'])*0.20>df.loc[i,'OPEN']-df.loc[i,'LOW']):
+#                    df.loc[i,'engulf']=int(0)
+#                elif(df.loc[i,'GREEN/RED']==1 and (df.loc[i,'HIGH']-df.loc[i,'CLOSE'])<(df.loc[i,'OPEN']-df.loc[i,'LOW'])*0.20):
+#                    df.loc[i,'engulf']=int(1)
+#                elif(df.loc[i,'GREEN/RED']==0 and (df.loc[i,'HIGH']-df.loc[i,'OPEN'])*0.20>df.loc[i,'CLOSE']-df.loc[i,'LOW']):
+#                    df.loc[i,'engulf']=int(0)
+#                elif(df.loc[i,'GREEN/RED']==0 and (df.loc[i,'HIGH']-df.loc[i,'OPEN'])<(df.loc[i,'CLOSE']-df.loc[i,'LOW'])*0.20):
+#                    df.loc[i,'engulf']=int(1)
+#                else:
+#                     df.loc[i,'engulf']=int(2)
+                    
+#temporarily putting values to columns
+x =[[1,2],[4,5]]
+for i in range(0,10463):
+    x.append([2,3])
+
+df['combine']=x
+df['combine1']=x
+
+
+for i in range(0,len(df.index)):
+    if i > 5:
+        df.at[i,'combine1']=[df.loc[i-4,'GREEN/RED'],df.loc[i-3,'GREEN/RED'],df.loc[i-2,'GREEN/RED'],df.loc[i-1,'GREEN/RED'],df.loc[i,'GREEN/RED']]
+# for i in range(0,len(df.index)):
+#     df.at[i,'CANDLE']=[df.loc[i,'GREEN/RED'],df.loc[i,'doji'],df.loc[i,'engulf']]
+for i in range(0,len(df.index)):
+    if i > 5:
+        df.at[i,'combine']=[df.loc[i-4,'CANDLE'],df.loc[i-3,'CANDLE'],df.loc[i-2,'CANDLE'],df.loc[i-1,'CANDLE'],df.loc[i,'CANDLE']]
+
+count=0
+green=0
+red=0
+validred=[0,0]
+validgreen=[0,0]
+my_columns=['combinations','red','green','count','percentage']
+df_red=pd.DataFrame(columns=my_columns)
+df_green=pd.DataFrame(columns=my_columns)
+temp_list=[]
+
+
+
+count1=0
+combinations=[]
+for i in range(5,len(df.index)-1):
+    for x in range(5,len(df.index)-1):
+        if combinations.count(df.loc[i,'combine1'])>0:
+            break
+            print(count1)
+        if df.loc[i,'combine1']==df.loc[x,'combine1']:
+            count=count+1
+            
+            if df.loc[x+1,'GREEN/RED']==1:
+                green=green+1
+            elif df.loc[x+1,'GREEN/RED']==0:
+                red=red+1
+    if count>1:
+        if red>green:
+            combinations.append(df.loc[i,'combine1'])
+            if red>0 and green==0:
+                validred.append(i)
+                df_red=pd.concat([df_red,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(red/(red+green))*100]})])
+            elif red/green>1:
+                validred.append(i)
+                df_red=pd.concat([df_red,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(red/(red+green))*100]})])
+
+        elif green>red:
+            combinations.append(df.loc[i,'combine1'])
+            if green>0 and red==0:
+                validgreen.append(i)
+                df_green=pd.concat([df_green,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(green/(red+green))*100]})])
+
+            elif green/red>1:
+                validgreen.append(i)
+                df_green=pd.concat([df_green,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(green/(red+green))*100]})])
+
+    count=0
+    green=0
+    red=0
+    count1=count1+1
+    
+    
+count1=0
+combinations=[]
+for i in range(5,len(df.index)-1):
+    for x in range(5,len(df.index)-1):
+        if combinations.count(df.loc[i,'combine1'])>0:
+            break
+            print(count1)
+        if df.loc[i,'combine1']==df.loc[x,'combine1']:
+            count=count+1
+            
+            if df.loc[x+1,'GREEN/RED']==1:
+                green=green+1
+            elif df.loc[x+1,'GREEN/RED']==0:
+                red=red+1
+    if count>1:
+        if red>green:
+            combinations.append(df.loc[i,'combine1'])
+            if red>0 and green==0:
+                validred.append(i)
+                df_red=pd.concat([df_red,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(red/(red+green))*100]})])
+            elif red/green>1:
+                validred.append(i)
+                df_red=pd.concat([df_red,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(red/(red+green))*100]})])
+
+        elif green>red:
+            combinations.append(df.loc[i,'combine1'])
+            if green>0 and red==0:
+                validgreen.append(i)
+                df_green=pd.concat([df_green,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(green/(red+green))*100]})])
+
+            elif green/red>1:
+                validgreen.append(i)
+                df_green=pd.concat([df_green,pd.DataFrame({'combinations':[df.loc[i,'combine1']],'red':[red],'green':[green],'count':[count],'percentage':[(green/(red+green))*100]})])
+
+    count=0
+    green=0
+    red=0
+    count1=count1+1
+df_green=df_green.reset_index()
+df_red=df_red.reset_index()
+
+df_green
